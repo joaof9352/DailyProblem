@@ -8,6 +8,25 @@ typedef struct slist {
     LInt next;
 } Node;
 
+LInt first(){
+    LInt a = malloc(sizeof(Node));
+    a->value = 1;
+    a->next = malloc(sizeof(Node));
+    a->next->value = 1;
+    a->next->next = malloc(sizeof(Node));
+    a->next->next->value = 2;
+    a->next->next->next = NULL;
+    return a;
+}
+
+int transform(LInt a){
+    int p = 0, ans = 0;
+    for(; a != NULL; p++, a = a->next){
+        ans += a->value * pow(10, p);
+    }
+    return ans;
+}
+
 LInt snoc (LInt l, int x){
     LInt ant,p;
     for(p = l; p != NULL; p = p->next) ant = p;
@@ -40,19 +59,24 @@ int* splitInt(int a){
         ans[i++] = a % 10;
         a /= 10;
     }
+
     return ans;
 }
 
 LInt piecesTogether(int* a, int N){
     LInt ans = malloc(sizeof(Node));
-    for(int i = 0; i < N; i++){
+    ans->value = a[0];
+    ans->next = NULL;
+    for(int i = 1; i < N; i++){
         snoc(ans,a[i]);
     }
     return ans;
 }
 
 int main() {
-    int test[] = {1,2,3,4};
-    LInt ans = piecesTogether(splitInt(1684),4);
+    LInt a = first();
+    LInt b = first();
+    int c = transform(a) + transform(b);
+    LInt ans = piecesTogether(splitInt(c),3);
     for(int i = 0; ans != NULL; ans = ans->next) printf("%d", ans->value);
 }
